@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - Dokumentation</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='./stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+	
+			<h2>Your Entity: <span class="bc_nice_html"></span></h2>
+			<div class="row">
+				 <div class="col-md-8">
+					 <div class="form-group">
+						<label for="entity_extid">External ID (like Serial Number)</label>
+						<input type="text" class="form-control" id="entity_extid" placeholder="1234...">
+					  </div>
+					  <button id='entity_btn' class='btn btn-default'>Retrieve Blockchain ID</button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>
+			<div class="withAddress" style="display:none">
+			<h2>Issue Transactions</h2>
+			<div class="row" style="margin-top:20px;">
+					<div class="col-md-8">
+						<button id='provider_sign' class='btn btn-default'>Signup Provider Contract As <span class="bc_nice_html"></span> <span class="glyphicon glyphicon-ok" style='display:none' id='provider_signed'>&nbsp;</span></button>
+					</div>
+					<div class="col-md-4"></div>
+			</div>
+			<hr/>
+			<div class="row">
+				 <div class="col-md-8">
+					 <div class="form-group">
+						<label for="mpo_reading">Meter Reading</label>
+						<input type="number" class="form-control" id="mpo_reading" placeholder="1234...">
+					  </div>
+					  <button id='mpo_store' class='btn btn-default'>As <span class="bc_nice_html"></span></button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>
+			<div class="row">
+				 <div class="col-md-8">
+					 <div class="form-group">
+						<label for="billing_energy">Billing per Energy-Unit</label>
+						<input type="number" class="form-control" id="billing_energy" placeholder="1234...">
+					  </div>
+					  <div class="form-group">
+						<label for="billing_day">Billing per Day</label>
+						<input type="number" class="form-control" id="billing_day" placeholder="1234...">
+					  </div>
+					  <button id='billing' class='btn btn-warning'>For <span class="bc_nice_html"></span></button>
+					  <button id='billing_sign' class='btn btn-default'>As <span class="bc_nice_html"></span></button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>			
+			</div>
+			 <footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a> | Block #<span class="lastBlock"></span></footer>
+	</div>
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
+	
+  </body>
+</html>
