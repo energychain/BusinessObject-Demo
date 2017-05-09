@@ -31,6 +31,9 @@
 			<hr/>
 			<div class="withAddress" style="display:none">
 			<h2>Issue Transactions</h2>
+			<div class="row">
+				   <pre id="txLog"></pre>
+			</div>
 			<div class="row" style="margin-top:20px;">
 					<div class="col-md-8">
 						<button id='provider_sign' class='btn btn-default'>Signup Provider Contract As <span class="bc_nice_html"></span> <span class="glyphicon glyphicon-ok" style='display:none' id='provider_signed'>&nbsp;</span></button>
@@ -59,14 +62,65 @@
 						<label for="billing_day">Billing per Day</label>
 						<input type="number" class="form-control" id="billing_day" placeholder="1234...">
 					  </div>
-					  <button id='billing' class='btn btn-warning'>For <span class="bc_nice_html"></span></button>
+					  <button id='billing_set' class='btn btn-warning'>For <span class="bc_nice_html"></span></button>
 					  <button id='billing_sign' class='btn btn-default'>As <span class="bc_nice_html"></span></button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>
+			<div class="row">
+				 <div class="col-md-8">
+					 <div class="form-group">
+						<label for="provider_deliverable">Add Deliverable to Provider contract</label>
+						<input type="text" class="form-control" id="provider_deliverable" placeholder="0x...">
+					  </div>
+					  <button id='provider_delivery' class='btn btn-default'>As <span class="bc_nice_html"></span></button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>	
+			<h2>Lookups</h2>
+			<div class="row">
+				<div class="col-md-8">	
+				<div class="form-group">
+						<label for="mpo_last_reading">Last Reading of <span class="bc_nice_html"></span></label>
+						<input type="text" class="form-control" id="mpo_last_reading" placeholder="" disabled="disabled">
+					  </div>	
+				 				
+					  <button id='mpo_last_read' class='btn btn-default'>Retrieve</span></button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-md-8">	
+				<div class="form-group">
+						<label for="mpo_deliverable_address">Last Deliverable of <span class="bc_nice_html"></span></label>
+						<input type="text" class="form-control" id="mpo_deliverable_address" placeholder="0x..." disabled="disabled">
+					  </div>	
+				 				
+					  <button id='mpo_deliverable' class='btn btn-default'>Retrieve</span></button>
+				 </div>				 
+				 <div class="col-md-2"></div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-md-8">	
+					  <div class="form-group">
+						<label for="provider_stromkonto_soll">Stromkonto Soll of <span class="bc_nice_html"></span></label>
+						<input type="text" class="form-control" id="provider_stromkonto_soll" placeholder="" disabled="disabled">
+					  </div>	
+					 <div class="form-group">
+						<label for="provider_stromkonto_haben">Stromkonto Haben of <span class="bc_nice_html"></span></label>
+						<input type="text" class="form-control" id="provider_stromkonto_haben" placeholder="" disabled="disabled">
+					  </div>				 				
+					  <button id='provider_stromkonto' class='btn btn-default'>Retrieve</span></button>
 				 </div>				 
 				 <div class="col-md-2"></div>
 			</div>
 			<hr/>			
 			</div>
-			 <footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a> | Block #<span class="lastBlock"></span></footer>
+			 <footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a> | Block #<span class="lastBlock"></span> | Source <span class="rpcsource"></span></footer>
 	</div>
 	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
