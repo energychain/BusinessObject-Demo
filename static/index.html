@@ -47,6 +47,7 @@
 						<label for="mpo_reading">Meter Reading</label>
 						<input type="number" class="form-control" id="mpo_reading" placeholder="1234...">
 					  </div>
+					  
 					  <button id='mpo_store' class='btn btn-default'>As <span class="bc_nice_html"></span></button>
 				 </div>				 
 				 <div class="col-md-2"></div>
@@ -86,7 +87,10 @@
 						<label for="mpo_last_reading">Last Reading of <span class="bc_nice_html"></span></label>
 						<input type="text" class="form-control" id="mpo_last_reading" placeholder="" disabled="disabled">
 					  </div>	
-				 				
+				 								<div class="form-group">
+						<label for="mpo_last_time">Time Commited <span class="bc_nice_html"></span></label>
+						<input type="text" class="form-control" id="mpo_last_time" placeholder="" disabled="disabled">
+					  </div>	
 					  <button id='mpo_last_read' class='btn btn-default'>Retrieve</span></button>
 				 </div>				 
 				 <div class="col-md-2"></div>
@@ -94,12 +98,28 @@
 			<hr/>
 			<div class="row">
 				<div class="col-md-8">	
-				<div class="form-group">
+					  <div class="form-group">
 						<label for="mpo_deliverable_address">Last Deliverable of <span class="bc_nice_html"></span></label>
 						<input type="text" class="form-control" id="mpo_deliverable_address" placeholder="0x..." disabled="disabled">
-					  </div>	
-				 				
+					  </div>					 				
 					  <button id='mpo_deliverable' class='btn btn-default'>Retrieve</span></button>
+						<div class="form-group">
+							<label for="delivery_power">Power</label>
+							<input type="text" class="form-control" id="delivery_power" placeholder="..." disabled="disabled">
+						</div>		
+						<div class="form-group">
+							<label for="delivery_startTime">Start Time</label>
+							<input type="text" class="form-control" id="delivery_startTime" placeholder="..." disabled="disabled">
+						</div>
+						<div class="form-group">
+							<label for="delivery_endTime">End Time</label>
+							<input type="text" class="form-control" id="delivery_endTime" placeholder="..." disabled="disabled">
+						</div>	
+						<div class="form-group">
+							<label for="delivery_resolution">Resolution</label>
+							<input type="text" class="form-control" id="delivery_resolution" placeholder="0x..." disabled="disabled">
+						</div>																					 				
+					  <button id='delivery_get' class='btn btn-default'>Get Details</span></button>
 				 </div>				 
 				 <div class="col-md-2"></div>
 			</div>

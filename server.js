@@ -171,6 +171,38 @@ server.route({
 });
 server.route({
     method: 'GET',
+    path:'/delivery/get', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		}  else if(typeof request.query.deliverable == "undefined") {
+				res.err="Missing GET parameter: deliverable";
+				return reply(res);
+		} 
+		else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.delivery(request.query.deliverable).then( function(delivery) {
+							delivery.power().then( function(tx_result) {	
+									res.power=tx_result[0].toString();
+									delivery.startTime().then( function(tx_result) {	
+										res.startTime=tx_result[0].toString();
+										delivery.endTime().then( function(tx_result) {	
+											res.endTime=tx_result[0].toString();
+											delivery.resolution().then( function(tx_result) {	
+												res.resolution=tx_result[0].toString();
+												return reply(res);
+											});
+										});
+									});
+							});
+						});
+		}		 
+    }
+});
+server.route({
+    method: 'GET',
     path:'/mpo/readings', 
     handler: function (request, reply) {
 		var res={}

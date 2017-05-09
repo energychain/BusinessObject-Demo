@@ -52,6 +52,18 @@ $('#provider_delivery').on('click',function() {
 								
 	});
 });
+$('#delivery_get').on('click',function() {
+	var url="/delivery/get?mpid="+$('#entity_extid').val()+"&deliverable="+$('#mpo_deliverable_address').val();
+	console.log("Send",url);
+	$.getJSON(url,function(data) {
+			$('#delivery_power').val(data.power);
+			$('#delivery_startTime').val(data.startTime);
+			$('#delivery_endTime').val(data.endTime);
+			$('#delivery_resolution').val(data.resolution);
+			console.log("Received",data);
+								
+	});
+});
 $('#mpo_deliverable').on('click',function() {
 	var url="/mpo/delivery?mpid="+$('#entity_extid').val();
 	console.log("Send",url);
@@ -77,6 +89,7 @@ $('#mpo_last_read').on('click',function() {
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			$('#mpo_last_reading').val(data.power);
+			$('#mpo_last_time').val(data.time);
 			console.log("Received",data);
 								
 	});
