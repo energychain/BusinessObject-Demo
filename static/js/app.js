@@ -35,13 +35,32 @@ $('.dropzone_mpo').droppable({
     //alert( "dropped" );
   }
 });
-$('.dropzone_mpo_sign').droppable({
+$('.dropzone_mpo_sign_in').droppable({
   accept: ".entity",
    drop: function(e,ui) {
 	var adr=$(ui.draggable[0]).attr('data');
 	$('#entity_extid').val(adr);
 	$('.bc_nice_html').html(adr);
-	var url="/mpo/sign?mpid="+$('#entity_extid').val();
+	var url="/mpo/sign?mpid="+$('#entity_extid').val()+"&role=4";
+	console.log("Send",url);
+	$.getJSON(url,function(data) {
+			console.log("Received",data);	
+			$('#txLog').html("TX: "+data.tx);	
+			$(ui.draggable[0]).empty();
+			$(ui.draggable[0]).remove();
+			retrieveEntity();				
+	});
+	
+    //alert( "dropped" );
+  }
+});
+$('.dropzone_mpo_sign_out').droppable({
+  accept: ".entity",
+   drop: function(e,ui) {
+	var adr=$(ui.draggable[0]).attr('data');
+	$('#entity_extid').val(adr);
+	$('.bc_nice_html').html(adr);
+	var url="/mpo/sign?mpid="+$('#entity_extid').val()+"&role=5";
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			console.log("Received",data);	

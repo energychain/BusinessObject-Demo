@@ -108,7 +108,11 @@ server.route({
 		if(typeof request.query.mpid == "undefined") {
 				res.err="Missing GET parameter: mpid";
 				return reply(res);
-		}  else {
+		}  else  if(typeof request.query.role == "undefined") {
+				res.err="Missing GET parameter: role";
+				return reply(res);
+		}  else
+		{
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 			node.roleLookup().then( function(roleLookup) {					
 					roleLookup.setRelation(node.options.roles[1],node.options.contracts["StromDAO-BO.sol:MPO"]).then( function(tx_result) {	
