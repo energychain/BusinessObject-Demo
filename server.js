@@ -102,6 +102,70 @@ server.route({
 });
 server.route({
     method: 'GET',
+    path:'/mpo/sign', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		}  else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.roleLookup().then( function(roleLookup) {					
+					roleLookup.setRelation(node.options.roles[1],node.options.contracts["StromDAO-BO.sol:MPO"]).then( function(tx_result) {	
+							
+						    node.mpo().then(function (mpo) {
+								mpo.approveMP(node.wallet.address,4).then(function(tx_result) {
+									return reply({tx_result:tx_result});
+								});
+							});							
+					});
+			});
+		}		 
+    }
+});
+server.route({
+    method: 'GET',
+    path:'/dso/sign', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		}  else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.roleLookup().then( function(roleLookup) {					
+					roleLookup.setRelation(node.options.roles[2],node.options.contracts["StromDAO-BO.sol:DSO"]).then( function(tx_result) {	
+						    node.dso().then(function (dso) {
+								dso.approveConnection(node.wallet.address,1000000).then(function(tx_result) {
+									return reply({tx_result:tx_result});
+								});
+							});							
+					});
+			});
+		}		 
+    }
+});
+server.route({
+    method: 'GET',
+    path:'/dso/check', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		}  else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.dso().then( function(dso) {
+							dso.approvedConnections(node.wallet.address).then( function(tx_result) {	
+									res.power_limit=tx_result[0].toString();
+									return reply(res);
+							});
+						});
+		}		 
+    }
+});
+server.route({
+    method: 'GET',
     path:'/provider/delivery', 
     handler: function (request, reply) {
 		var res={}
@@ -192,7 +256,10 @@ server.route({
 											res.endTime=tx_result[0].toString();
 											delivery.resolution().then( function(tx_result) {	
 												res.resolution=tx_result[0].toString();
-												return reply(res);
+												delivery.owner().then( function(tx_result) {	
+													res.owner=tx_result[0].toString();
+													return reply(res);
+												});
 											});
 										});
 									});

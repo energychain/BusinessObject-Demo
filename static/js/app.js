@@ -1,3 +1,6 @@
+var mapping=[];
+mapping["0xd457F18DB9949899263d5bEbd74e74Ef6d2a6624"]="Provider";
+
 function retrieveEntity() {
 	var url="/node/address?mpid="+$('#entity_extid').val();
 	console.log("Send",url);
@@ -6,9 +9,11 @@ function retrieveEntity() {
 			$('.withAddress').show();	
 				
 		
-			var html="<h1><span id='entity_"+data.address.substr(4,9)+"' data='"+$('#entity_extid').val()+"'><span class='glyphicon glyphicon-king'></span>&nbsp;"+$('#entity_extid').val()+"</span></h1>";
+			var html="<h2 title='"+data.address+"'><span id='entity_"+data.address.substr(4,9)+"' data='"+$('#entity_extid').val()+"'><span class='glyphicon glyphicon-king'></span>&nbsp;"+$('#entity_extid').val()+"</span></h2>";
 			$(html).appendTo('#bcadr');				
 			$('#entity_'+data.address.substr(4,9)).draggable().addClass('label label-default entity');
+			 $('#entity_'+data.address.substr(4,9)).affix();
+			 mapping[data.address]=$('#entity_extid').val();
 	});
 }
 
@@ -27,6 +32,25 @@ $('.dropzone_mpo').droppable({
 	$(ui.draggable[0]).empty();
 	$(ui.draggable[0]).remove();
 	retrieveEntity();
+    //alert( "dropped" );
+  }
+});
+$('.dropzone_mpo_sign').droppable({
+  accept: ".entity",
+   drop: function(e,ui) {
+	var adr=$(ui.draggable[0]).attr('data');
+	$('#entity_extid').val(adr);
+	$('.bc_nice_html').html(adr);
+	var url="/mpo/sign?mpid="+$('#entity_extid').val();
+	console.log("Send",url);
+	$.getJSON(url,function(data) {
+			console.log("Received",data);	
+			$('#txLog').html("TX: "+data.tx);	
+			$(ui.draggable[0]).empty();
+			$(ui.draggable[0]).remove();
+			retrieveEntity();				
+	});
+	
     //alert( "dropped" );
   }
 });
@@ -49,7 +73,42 @@ $('.dropzone_mpo_commit').droppable({
     //alert( "dropped" );
   }
 });
-
+$('.dropzone_dso').droppable({
+  accept: ".entity",
+   drop: function(e,ui) {
+	var adr=$(ui.draggable[0]).attr('data');
+	$('#entity_extid').val(adr);
+	$('.bc_nice_html').html(adr);
+	var url="/dso/check?mpid="+$('#entity_extid').val();
+	console.log("Send",url);
+	$.getJSON(url,function(data) {
+			console.log("Received",data);	
+			$('#dso_power_limit').val(data.power_limit);			
+			$(ui.draggable[0]).empty();
+			$(ui.draggable[0]).remove();
+			retrieveEntity();				
+	});
+  }
+});
+$('.dropzone_dso_commit').droppable({
+  accept: ".entity",
+   drop: function(e,ui) {
+	var adr=$(ui.draggable[0]).attr('data');
+	$('#entity_extid').val(adr);
+	$('.bc_nice_html').html(adr);
+	var url="/dso/sign?mpid="+$('#entity_extid').val();
+	console.log("Send",url);
+	$.getJSON(url,function(data) {
+			console.log("Received",data);	
+			$('#txLog').html("TX: "+data.tx);	
+			$(ui.draggable[0]).empty();
+			$(ui.draggable[0]).remove();
+			retrieveEntity();				
+	});
+	
+    //alert( "dropped" );
+  }
+});
 $('.dropzone_sign_billing').droppable({
   accept: ".entity",
    drop: function(e,ui) {
@@ -90,6 +149,27 @@ $('.dropzone_delivery').droppable({
   }
 });
 
+$('.dropzone_stromkonto').droppable({
+  accept: ".entity",
+   drop: function(e,ui) {
+	   var adr=$(ui.draggable[0]).attr('data');
+	   $('#entity_extid').val(adr);
+	var url="/provider/stromkonto?mpid="+adr;
+		console.log("Send",url);
+		$.getJSON(url,function(data) {
+				//$('#mpo_deliverable_address').val(data.tx_result);
+				$('#provider_stromkonto_soll').val(data.soll.toString());
+				$('#provider_stromkonto_haben').val(data.haben.toString());
+				console.log("Received",data);
+					
+				$(ui.draggable[0]).empty();
+				$(ui.draggable[0]).remove();
+				retrieveEntity()				
+		});	   
+	   
+  }
+});
+
 function billing_sign() {
 	var url="/provider/sign?mpid="+$('#entity_extid').val();
 	console.log("Send",url);
@@ -118,11 +198,11 @@ $('#billing_sign').on('click',function() {
 });
 
 function appendDel(del) {
-				$("#del_"+del.substr(4,10)).empty()
-			$("#del_"+del.substr(4,10)).remove();
-			var html="<h2><span id='del_"+del.substr(4,10)+"' data='"+del+"'><span class='glyphicon glyphicon-tag'></span>&nbsp;"+del.substr(4,9)+"</span></h2>";
+				$("#del_"+del.substr(2,10)).empty()
+			$("#del_"+del.substr(2,10)).remove();
+			var html="<h3><span id='del_"+del.substr(2,10)+"' data='"+del+"'><span class='glyphicon glyphicon-tag'></span>&nbsp;"+del.substr(2,10)+"</span></h3>";
 			$(html).appendTo('#deliverables');	
-			$('#del_'+del.substr(4,10)).draggable().addClass('label label-primary delivery');
+			$('#del_'+del.substr(2,10)).draggable().addClass('label label-primary delivery');
 }
 
 function delivery_get(adr,del) {
@@ -133,6 +213,8 @@ function delivery_get(adr,del) {
 			$('#delivery_startTime').val(data.startTime);
 			$('#delivery_endTime').val(data.endTime);
 			$('#delivery_resolution').val(data.resolution);
+			if(typeof mapping[data.owner] != "undefined") data.owner=mapping[data.owner];
+			$('#delivery_owner').val(data.owner);
 			console.log("Received",data);
 			appendDel(del);
 			appendDel(data.resolution);
@@ -151,17 +233,7 @@ function last_deliverable(adr) {
 								
 	});
 };
-$('#provider_stromkonto').on('click',function() {
-	var url="/provider/stromkonto?mpid="+$('#entity_extid').val();
-	console.log("Send",url);
-	$.getJSON(url,function(data) {
-			//$('#mpo_deliverable_address').val(data.tx_result);
-			$('#provider_stromkonto_soll').val(data.soll.toString());
-			$('#provider_stromkonto_haben').val(data.haben.toString());
-			console.log("Received",data);
-								
-	});
-});
+
 function last_meter_reading(adr) {
 	var url="/mpo/readings?mpid="+adr;
 	console.log("Send",url);
