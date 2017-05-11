@@ -41,7 +41,7 @@ $('.dropzone_mpo_sign_in').droppable({
 	var adr=$(ui.draggable[0]).attr('data');
 	$('#entity_extid').val(adr);
 	$('.bc_nice_html').html(adr);
-	var url="/mpo/sign?mpid="+$('#entity_extid').val()+"&role=4";
+	var url="/mpo/sign?mpid="+$('#entity_extid').val()+"&role=5";
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			console.log("Received",data);	
@@ -60,7 +60,7 @@ $('.dropzone_mpo_sign_out').droppable({
 	var adr=$(ui.draggable[0]).attr('data');
 	$('#entity_extid').val(adr);
 	$('.bc_nice_html').html(adr);
-	var url="/mpo/sign?mpid="+$('#entity_extid').val()+"&role=5";
+	var url="/mpo/sign?mpid="+$('#entity_extid').val()+"&role=4";
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			console.log("Received",data);	

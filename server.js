@@ -115,10 +115,11 @@ server.route({
 		{
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 			node.roleLookup().then( function(roleLookup) {					
+				console.log(node.options.roles[1],node.options.contracts["StromDAO-BO.sol:MPO"]);
 					roleLookup.setRelation(node.options.roles[1],node.options.contracts["StromDAO-BO.sol:MPO"]).then( function(tx_result) {	
 							
 						    node.mpo().then(function (mpo) {
-								mpo.approveMP(node.wallet.address,4).then(function(tx_result) {
+								mpo.approveMP(node.wallet.address,request.query.role).then(function(tx_result) {
 									return reply({tx_result:tx_result});
 								});
 							});							
@@ -137,9 +138,9 @@ server.route({
 				return reply(res);
 		}  else {
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
-			node.roleLookup().then( function(roleLookup) {					
+			node.roleLookup().then( function(roleLookup) {					   
 					roleLookup.setRelation(node.options.roles[2],node.options.contracts["StromDAO-BO.sol:DSO"]).then( function(tx_result) {	
-						    node.dso().then(function (dso) {
+						    node.dso().then(function (dso) {								
 								dso.approveConnection(node.wallet.address,1000000).then(function(tx_result) {
 									return reply({tx_result:tx_result});
 								});
