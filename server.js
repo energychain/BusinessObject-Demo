@@ -70,14 +70,23 @@ server.route({
 				return reply(res);
 		} else {
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
-			  node.mpo().then( function(mpo) {
-							mpo.storeReading(request.query.reading).then( function(tx_result) {	
-									res.tx=tx_result;
-									res.mpid=request.query.mpid;
-									res.reading=request.query.reading;
-									res.address=node.wallet.address;
-								    return reply(res);
-							});
+			  node.mpo()
+							.then( function(mpo) {
+							mpo.test.storeReading(request.query.reading)
+								.then( function(tx_result) {										
+										mpo.storeReading(request.query.reading).then( 
+											function(tx_result) { 
+												res.tx=tx_result;
+												res.mpid=request.query.mpid;
+												res.reading=request.query.reading;
+												res.address=node.wallet.address;
+												return reply(res);
+											});
+								})
+								.catch(function() {										
+										res.err="ERROR";
+										return reply(res);
+								});
 			});
 		}		 
     }
@@ -115,9 +124,9 @@ server.route({
 		{
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 			node.roleLookup().then( function(roleLookup) {					
-				console.log(node.options.roles[1],node.options.contracts["StromDAO-BO.sol:MPO"]);
+					
 					roleLookup.setRelation(node.options.roles[1],node.options.contracts["StromDAO-BO.sol:MPO"]).then( function(tx_result) {	
-							
+							console.log(tx_result);
 						    node.mpo().then(function (mpo) {
 								mpo.approveMP(node.wallet.address,request.query.role).then(function(tx_result) {
 									return reply({tx_result:tx_result});
@@ -269,6 +278,30 @@ server.route({
 										});
 									});
 							});
+						});
+		}		 
+    }
+});
+
+server.route({
+    method: 'GET',
+    path:'/delivery/include', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		}  else if(typeof request.query.deliverable == "undefined") {
+				res.err="Missing GET parameter: deliverable";
+				return reply(res);
+		} else if(typeof request.query.includor == "undefined") {
+				res.err="Missing GET parameter: deliverable";
+				return reply(res);
+		}
+		else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.delivery(request.query.deliverable).then( function(delivery) {
+								return reply(res);							
 						});
 		}		 
     }

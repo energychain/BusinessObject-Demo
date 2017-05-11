@@ -83,10 +83,24 @@ $('.dropzone_mpo_commit').droppable({
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			console.log("Received",data);	
-			$('#txLog').html("TX: "+data.tx);	
+
 			$(ui.draggable[0]).empty();
 			$(ui.draggable[0]).remove();
-			retrieveEntity();				
+			retrieveEntity();	
+			if(typeof data.err != "undefined") {
+				var old_html=$('.dropzone_mpo_commit').html();
+				$('.dropzone_mpo_commit').html('<div class="alert alert-danger" role="alert">FAILED!</div>');				
+				$('#txLog').html("TX: "+data.err);
+				$("#"+ui.draggable[0].id).removeClass("label-default");
+				$("#"+ui.draggable[0].id).addClass("label-error");
+				setTimeout(function() {
+					$('.dropzone_mpo_commit').html(old_html);
+				},2000);
+			} else {
+				$('#txLog').html("TX: "+data.tx);
+				$("#"+ui.draggable[0].id).removeClass("label-error");
+				$("#"+ui.draggable[0].id).addClass("label-default");
+			}			
 	});
 	
     //alert( "dropped" );
