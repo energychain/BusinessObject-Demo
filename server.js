@@ -102,8 +102,10 @@ server.route({
 		}  else {
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 			node.roleLookup().then( function(roleLookup) {					
-					roleLookup.setRelation(node.options.roles[3],node.options.contracts["StromDAO-BO.sol:Provider"]).then( function(tx_result) {	
-							return reply({tx_result:tx_result});
+					roleLookup.setRelation(node.options.roles[3],node.options.contracts["StromDAO-BO.sol:Provider"]).then( function(tx_result) {
+							
+								return reply({tx_result:tx_result});	
+							
 					});
 			});
 		}		 
@@ -192,8 +194,9 @@ server.route({
 				return reply(res);
 		}  else {
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
-			node.provider().then( function(provider) {							
-							provider.handleDelivery(request.query.delivery).then( function(tx_result) {										
+			node.provider().then( function(provider) {		
+							provider.handleDelivery(request.query.delivery).then( function(tx_result) {	
+									console.log("Handled",	request.query.delivery);								
 									return reply({tx_result:tx_result});
 							});
 			});
@@ -338,8 +341,19 @@ server.route({
 		}  else {
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 			node.provider().then( function(provider) {							
-						provider.approveSender(node.wallet.address,true,request.query.day,request.query.energy).then( function(tx_result) {								
-								return reply({tx_result:tx_result});
+						provider.approveSender(node.wallet.address,true,request.query.day,request.query.energy).then( function(tx_result) {		
+							
+									provider.billings(node.wallet.address).then( function(tx_result) {	
+											console.log("Billings",tx_result);
+											node.billing(tx_result[0]).then( function(billing) {
+													console.log("Billing",billing);
+													billing.becomeTo().then(function(tx_result2) {
+														console.log("Became To with",tx_result2);
+														return reply({tx_result:tx_result});
+													});
+											});									
+									});													
+							//s	return reply({tx_result:tx_result});
 						});
 			});
 		}		 
@@ -356,12 +370,10 @@ server.route({
 		}  else {
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 						node.provider().then( function(provider) {	
-							provider.billings(node.wallet.address).then( function(tx_result) {										
-									node.billing(tx_result[0]).then( function(billing) {
-											billing.becomeTo().then(function(tx_result2) {
-												return reply({tx_result:tx_result});
-										    });
-									});									
+							
+							provider.approveSender(node.wallet.address,true,request.query.day,request.query.energy).then( function(tx_result) {
+							console.log("Approve Sender b/s",node.wallet.address);
+
 							});
 						});
 		}		 

@@ -1,5 +1,5 @@
 var mapping=[];
-mapping["0xd457F18DB9949899263d5bEbd74e74Ef6d2a6624"]="Provider";
+mapping["0x23b0209Bc95dc71f8fc29e526C438C8F4332E4e6"]="Provider";
 
 function retrieveEntity() {
 	var url="/node/address?mpid="+$('#entity_extid').val();
@@ -204,20 +204,21 @@ $('.dropzone_stromkonto').droppable({
 });
 
 function billing_sign() {
+
 	var url="/provider/sign?mpid="+$('#entity_extid').val();
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			console.log("Received",data);
 			$('#txLog').html(data);
-			$('#provider_signed').show();						
+			$('#provider_signed').show();
+				var url="/billing/set?mpid="+$('#entity_extid').val()+"&energy="+$('#billing_energy').val()+"&day="+$('#billing_day').val();
+				console.log("Send",url);
+				$.getJSON(url,function(data) {
+						console.log("Received",data);						
+				});						
 	});
 
-	var url="/billing/set?mpid="+$('#entity_extid').val()+"&energy="+$('#billing_energy').val()+"&day="+$('#billing_day').val();
-	console.log("Send",url);
-	$.getJSON(url,function(data) {
-			console.log("Received",data);
-								
-	});
+
 }
 ;
 $('#billing_sign').on('click',function() {
