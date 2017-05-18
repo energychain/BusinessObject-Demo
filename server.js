@@ -93,6 +93,41 @@ server.route({
 });
 server.route({
     method: 'GET',
+    path:'/mpr/store', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		} else 
+		if(typeof request.query.reading == "undefined") {
+				res.err="Missing GET parameter: reading";
+				return reply(res);
+		} else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			  node.mpr()
+							.then( function(mpr) {
+							mpr.test.storeReading(request.query.reading)
+								.then( function(tx_result) {										
+										mpr.storeReading(request.query.reading).then( 
+											function(tx_result) { 
+												res.tx=tx_result;
+												res.mpid=request.query.mpid;
+												res.reading=request.query.reading;
+												res.address=node.wallet.address;
+												return reply(res);
+											});
+								})
+								.catch(function() {										
+										res.err="ERROR";
+										return reply(res);
+								});
+			});
+		}		 
+    }
+});
+server.route({
+    method: 'GET',
     path:'/provider/sign', 
     handler: function (request, reply) {
 		var res={}
@@ -322,6 +357,27 @@ server.route({
 			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
 			node.mpo().then( function(mpo) {
 							mpo.readings(node.wallet.address).then( function(tx_result) {	
+									res.time=tx_result.time.toString();
+									res.power=tx_result.power.toString();
+									return reply(res);
+							});
+						});
+		}		 
+    }
+});
+server.route({
+    method: 'GET',
+    path:'/mpr/readings', 
+    handler: function (request, reply) {
+		var res={}
+		if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		}  
+		else {
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.mpr().then( function(mpr) {
+							mpr.readings(node.wallet.address).then( function(tx_result) {	
 									res.time=tx_result.time.toString();
 									res.power=tx_result.power.toString();
 									return reply(res);
