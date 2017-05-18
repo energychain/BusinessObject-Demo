@@ -19,6 +19,6 @@
   "dependencies": {
     "hapi": "^16.1.1",
     "inert": "^4.2.0",
-    "stromdao-businessobject": "^0.1.7"
+    "stromdao-businessobject": "^0.2.1"
   }
 }
