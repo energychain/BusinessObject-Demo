@@ -5,17 +5,11 @@ function retrieveEntity() {
 	var url="/node/address?mpid="+$('#entity_extid').val();
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
-			console.log("Received",data);
+			console.log("Received",JSON.stringify(data));
 			$('.withAddress').show();	
 				
 			last_meter_reading(data.address);
-			
-			/*
-			var html="<h2 title='"+data.address+"'><span id='entity_"+data.address.substr(4,9)+"' data='"+$('#entity_extid').val()+"'><span class='glyphicon glyphicon-king'></span>&nbsp;"+$('#entity_extid').val()+"</span></h2>";
-			$(html).appendTo('#bcadr');				
-			$('#entity_'+data.address.substr(4,9)).draggable().addClass('label label-default entity');
-			 $('#entity_'+data.address.substr(4,9)).affix();
-			 * */
+			$('#address').html(data.address);
 			 mapping[data.address]=$('#entity_extid').val();
 	});
 }
@@ -30,14 +24,10 @@ $('#mpr_store').on('click',function() {
 	var url="/mpr/store?mpid="+$('#entity_extid').val()+"&reading="+$('#mpo_reading').val();
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
-			console.log("Received",data);	
+			console.log("Received",JSON.stringify(data));	
 		
 			retrieveEntity();	
-			if(typeof data.err != "undefined") {							
-				$('#txLog').html("TX: "+data.err);							
-			} else {
-				$('#txLog').html("TX: "+data.tx);				
-			}			
+				
 	});	
 });
 
@@ -48,7 +38,7 @@ function last_meter_reading(adr) {
 	$.getJSON(url,function(data) {
 			$('#mpo_reading').val(data.power);			
 			$('#mpo_last_time').val(new Date((data.time+"000")*1).toLocaleString());
-			console.log("Received",data);
+			console.log("Received",JSON.stringify(data));
 								
 	});
 };
@@ -63,3 +53,27 @@ setInterval(function() {
 	$.getJSON("/node/rpcsource?mpid=1337",function(o) {
 		$('.rpcsource').html(o.rpcsource);	
 	});
+	
+var baseLogFunction = console.log;
+	
+ console.log = function(){
+        baseLogFunction.apply(console, arguments);
+
+        var args = Array.prototype.slice.call(arguments);
+        for(var i=0;i<args.length;i++){
+            var node = createLogNode(args[i]);
+            document.querySelector("#txLog").appendChild(node);
+        }
+
+    }
+function createLogNode(message){
+        var node = document.createElement("div");
+        var textNode = document.createTextNode(message);
+        node.appendChild(textNode);
+        return node;
+    }
+
+    window.onerror = function(message, url, linenumber) {
+        console.log("JavaScript error: " + message + " on line " +
+            linenumber + " for " + url);
+    }	
