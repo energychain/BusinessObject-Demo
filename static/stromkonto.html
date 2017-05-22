@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>StromDAO/Business Object - STROMKONTO.demo</title>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+  </head>
+  <body >
+	<div class="container" style="margin-top:30px;">
+		    <div class="row">
+				<div class="col-md-12" style="text-align:right"> 
+					<a href='https://stromdao.de/'><img src='./stromdao_logo.png'/></a><br/>
+					<em style='color:#999999'>digital energy infrastructure for tomorrow.</em>
+			    </div>
+			</div>
+	
+			<h2>Stromkonto</h2>
+			<div class="row">
+				 <div class="col-md-8">
+					 <div class="form-group">
+						<label for="entity_contract">Contract Address</label>
+						<input type="text" class="form-control" id="entity_contract" placeholder="0x..." value="0x0000000000000000000000000000000000000007">
+					  </div>
+					  <button id='entity_btn' class='btn btn-default'>Retrieve</button>
+				 </div>		
+				 <div class="col-md-2"></div>		 
+				 <div class="col-md-2">
+					
+				 </div>
+			</div>
+						<div class="withAddress" style="display:none">
+			<hr/>
+		
+				<h2>Balances</h2>
+				<div class="row">
+					 <div class="col-md-8">
+					 <div class="form-group">
+						<label for="entity_account">Account</label>
+						<input type="text" class="form-control" id="entity_account" placeholder="0x...">
+					  </div>
+					  <button id='account_btn' class='btn btn-default'>Retrieve</button>
+					</div>		
+					<div class="col-md-2"></div>		 
+					<div class="col-md-2">
+					
+				 </div>				
+				</div>
+				
+				<div class="row">
+				<div class="col-md-4">
+					<h2>Assets</h2>
+					<h1 id="soll"></h1>
+				</div>	
+				<div class="col-md-4">
+					<h2>Liabilities</h2>
+					<h1 id="haben"></h1>
+				</div>	
+				<div class="col-md-4">
+					<h2>Balance</h2>
+					<h1 id="saldo"></h1>
+				</div>	
+				</div>
+			<hr/>
+		
+	
+
+			<h2>Market Communication/Blockchain Log</h2>
+			<div class="row">
+				   <div id="address"></div>
+				   <pre id="txLog"></pre>
+				   
+			</div>
+			</div> 
+			 <footer style="margin-top:60px;">&copy; 2017 <a href="https://stromdao.de/">StromDAO Ltd.</a> | Block #<span class="lastBlock"></span> | Source <span class="rpcsource"></span></footer>
+	</div>
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="/parity-utils/inject.js"></script>
+	<script src="js/app_stromkonto.js"></script>
+	
+  </body>
+</html>

@@ -480,6 +480,37 @@ server.route({
 		}		 
     }
 });
+server.route({
+    method: 'GET',
+    path:'/stromkonto/balance', 
+    handler: function (request, reply) {
+		var res={}
+			if(typeof request.query.mpid == "undefined") {
+				res.err="Missing GET parameter: mpid";
+				return reply(res);
+		} else 
+		if(typeof request.query.account == "undefined") {
+				res.err="Missing GET parameter: account";
+				return reply(res);
+		} else 
+		if(typeof request.query.contract == "undefined") {
+				res.err="Missing GET parameter: contract";
+				return reply(res);
+		} else
+		{
+			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			node.stromkonto(request.query.contract).then( function(stromkonto) {
+							stromkonto.balancesSoll(request.query.account).then( function(tx_result) {	
+									res.soll=(tx_result.toString()*1);
+									stromkonto.balancesHaben(request.query.account).then( function(tx_result) {	
+												res.haben=(tx_result.toString()*1);									
+												return reply(res);							
+									});
+							});
+						});
+		}		 
+    }
+});
 
 server.register(require('inert'), (err) => {
 
