@@ -354,7 +354,7 @@ server.route({
 				return reply(res);
 		}  
 		else {
-			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			var node = new StromDAOBO.Node({external_id:1337,testMode:true});
 			node.mpo().then( function(mpo) {
 							mpo.readings(node.wallet.address).then( function(tx_result) {	
 									res.time=tx_result.time.toString();
@@ -375,9 +375,9 @@ server.route({
 				return reply(res);
 		}  
 		else {
-			var node = new StromDAOBO.Node({external_id:request.query.mpid,testMode:true});
+			var node = new StromDAOBO.Node({external_id:1337,testMode:true});
 			node.mpr().then( function(mpr) {
-							mpr.readings(node.wallet.address).then( function(tx_result) {	
+							mpr.readings(request.query.mpid).then( function(tx_result) {	
 									res.time=tx_result.time.toString();
 									res.power=tx_result.power.toString();
 									return reply(res);

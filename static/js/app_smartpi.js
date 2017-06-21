@@ -1,49 +1,43 @@
-var mapping=[];
-mapping["0x23b0209Bc95dc71f8fc29e526C438C8F4332E4e6"]="Provider";
+
+
 
 function retrieveEntity() {
-	var url="/node/address?mpid="+$('#entity_extid').val();
+	$('.withAddress').show();
+	
+}
+function retrieveReading() {
+	$('.withAddress').show();
+	var url="/mpr/readings?mpid="+$('#entity_contract').val()+"&account="+$('#entity_account').val()+"&contract="+$('#entity_contract').val();
 	console.log("Send",url);
 	$.getJSON(url,function(data) {
 			console.log("Received",JSON.stringify(data));
-			$('.withAddress').show();	
-				
-			last_meter_reading(data.address);
-			$('#address').html(data.address);
-			 mapping[data.address]=$('#entity_extid').val();
+							
+			$('#time').html(new Date(data.time*1000).toLocaleString());
+			$('#power').html(Math.round(data.power/1000)+" wh");						
+	});
+	setInterval("retrieveReading()",5000);
+}
+
+function retrieveBalance() {
+	var url="/stromkonto/balance?mpid=1337&account="+$('#entity_account').val()+"&contract="+$('#entity_contract').val();
+	console.log("Send",url);
+	$.getJSON(url,function(data) {
+			console.log("Received",JSON.stringify(data));
+							
+			$('#soll').html(data.soll);
+			$('#haben').html(data.haben);			
+			$('#saldo').html(data.haben-data.soll);	
 	});
 }
 
 $('#entity_btn').on('click',function() {
-	retrieveEntity();
+	//retrieveEntity();
+	retrieveReading();
+});
+$('#account_btn').on('click',function() {
+	retrieveBalance();
 });
 
-
-$('#mpr_store').on('click',function() {
-	
-	var url="/mpr/store?mpid="+$('#entity_extid').val()+"&reading="+$('#mpo_reading').val();
-	console.log("Send",url);
-	$.getJSON(url,function(data) {
-			console.log("Received",JSON.stringify(data));			
-			retrieveEntity();	
-				
-	});	
-});
-
-
-function last_meter_reading(adr) {
-	var url="/mpr/readings?mpid="+$('#entity_extid').val();
-	console.log("Send",url);
-	$.getJSON(url,function(data) {
-			$('#mpo_reading').val(data.power);			
-			$('#mpo_last_time').val(new Date((data.time+"000")*1).toLocaleString());
-			console.log("Received",JSON.stringify(data));
-								
-	});
-};
-$( ".eth_addr_btn" ).draggable({
-  addClasses: true
-});
 setInterval(function() {
 	$.getJSON("/node/blocknumber?mpid=1337",function(o) {
 		$('.lastBlock').html(o.blocknumber);	
