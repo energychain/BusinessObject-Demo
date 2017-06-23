@@ -16,5 +16,7 @@ Within the next 10 years the number of actors on the market will explode from cu
 
 Instead of developing proprietary platforms, StromDAO sees an opportunity for energy market participants to jointly fund and develop a single environment for the global energy sector, national grids and local communities. Consens is universal.
 
+Please refer to our community for further details
+
 /Digital Energy Infrastructure for Tomorrow./
  
